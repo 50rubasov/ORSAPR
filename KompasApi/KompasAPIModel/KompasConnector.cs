@@ -26,22 +26,22 @@ namespace KompasAPIModel
         /// </summary>
         public void OpenKompas3D()
         {
-            if (KompasObj == null)
+            try
             {
-                var type = Type.GetTypeFromProgID("KOMPAS.Application.5");
-                KompasObj = (KompasObject)Activator.CreateInstance(type);
+                KompasObj = (KompasObject)Marshal.GetActiveObject("KOMPAS.Application.5");
+                KompasObj.Visible = true;
             }
-            if (KompasObj != null)
+            //Создание нового экзмепляра
+            catch
             {
-                try
-                {
-                    KompasObj.Visible = true;
-                    KompasObj.ActivateControllerAPI();
-                }
-                catch (Exception)
-                {
-                    throw new Exception();
-                }
+                Type t = Type.GetTypeFromProgID("KOMPAS.Application.5");
+                KompasObj = (KompasObject)Activator.CreateInstance(t);
+                KompasObj.Visible = true;
+            }
+            finally
+            {
+                //Активация API созданного экземпляра КОМПАС 3Д
+                KompasObj.ActivateControllerAPI();
             }
         }
 
@@ -69,7 +69,7 @@ namespace KompasAPIModel
             }
             catch (Exception)
             {
-                throw new NullReferenceException(@"Сначала откройте KOMPAS 3D");
+                throw new NullReferenceException();
             }
         }
 
@@ -82,7 +82,7 @@ namespace KompasAPIModel
         public void CloseKompas3D()
         {
 
-            
+
             try
             {
                 if (KsDocumentObj != null)
@@ -91,15 +91,23 @@ namespace KompasAPIModel
                     KsDocumentObj = null;
 
                 }
+
                 KompasObj.Quit();
                 KompasObj = null;
-            }
-            catch
-            {
-                throw new NullReferenceException();
 
             }
-      
+            catch (COMException exception)
+            {
+               
+                //Сработает в случае если компас был закрыт вручную
+            }
+            finally
+            {
+                KompasObject KompasObj = null;
+                ksDocument3D KsDocumentObj = null;
+
+            }
+
         }
     }
 }

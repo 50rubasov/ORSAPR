@@ -52,10 +52,15 @@ namespace KompasAPIModel
 
         /// <summary>
         /// Создание эскиза
-        /// ksEntityDraw интерфейс элемента модели
+        /// 
         /// </summary>
-        /// <param name="part">компонент сборки</param>
-        /// <param name="axis">Ось</param>
+        /// <param name="part">интерфейс компонента</param>
+        /// <param name="ksEntityDraw">тип эскиза</param>
+        /// <param name="KompasObj">объект компаса</param>
+        /// <param name="ksEntityPlane">тип плоскости</param>
+        /// <param name="OffsetPlane">смещение оси</param>
+        /// <param name="rectangle">фигура формы прямоугольника</param>
+        /// <param name="TypeOfCircle">тип отверстия</param>
         private void CreatSketchMethod(ksPart part,
             ksEntity ksEntityDraw, KompasObject KompasObj, ksEntity ksEntityPlane, bool OffsetPlane, bool rectangle, int TypeOfCircle)
         {
@@ -93,21 +98,19 @@ namespace KompasAPIModel
                 {
                     if (bodyparams.NumberOfHoles == 1)
                     {
-                        _ksDocument2D.ksCircle(-(bodyparams.Height / 2), -(bodyparams.Lenght/2), bodyparams.SubDiameter / 2, 1);
+                        _ksDocument2D.ksCircle(-(bodyparams.Height / 2), -(bodyparams.Lenght/2), bodyparams.SubDiameter / 2, TypeOfCircle);
                     }
                     else
                     {
-                        _ksDocument2D.ksCircle(-(bodyparams.Height / 2), -(bodyparams.Lenght / 4), bodyparams.SubDiameter / 2, 1);
-                        _ksDocument2D.ksCircle(-(bodyparams.Height / 2), -(3* bodyparams.Lenght / 4), bodyparams.SubDiameter / 2, 1);
+                        _ksDocument2D.ksCircle(-(bodyparams.Height / 2), -(bodyparams.Lenght / 4), bodyparams.SubDiameter / 2, TypeOfCircle);
+                        _ksDocument2D.ksCircle(-(bodyparams.Height / 2), -(3* bodyparams.Lenght / 4), bodyparams.SubDiameter / 2, TypeOfCircle);
                     }
                 }
                 else if (TypeOfCircle == 2)
                 {
-                    _ksDocument2D.ksCircle(bodyparams.Width/2, -(bodyparams.Height / 2), bodyparams.PortDiameter/2, 1);
+                    _ksDocument2D.ksCircle(bodyparams.Width/2, -(bodyparams.Height / 2), bodyparams.PortDiameter/2, TypeOfCircle);
                 }
             }
-            // Интерфейс параметров для закрытия режима
-            // редактирования эскиза
             _ksSketchDefinition.EndEdit();
         }
 
@@ -129,7 +132,7 @@ namespace KompasAPIModel
                     (short)End_Type.etBlind,
                     bodyparams.Height, 0, false
                     );
-                ksBaseExtrusionDefinition.SetThinParam(true, (short)Direction_Type.dtReverse, 0, bodyparams.Thickness);// тонкая стенка в два направления
+                ksBaseExtrusionDefinition.SetThinParam(true, (short)Direction_Type.dtReverse, 0, bodyparams.Thickness);
                 ksBaseExtrusionDefinition.SetSketch(ksEntityDraw);
                 ksEntityExtrusion.Create();
             }
@@ -215,14 +218,18 @@ namespace KompasAPIModel
         /// </summary>
         public void Build(KompasConnector KompasConnector)
         {
+            const int Sketch = 5;
+            const int SubCircle = 1;
+            const int PortCircle = 2;
+
 
             KompasConnector.CreateDocument();
             ksEntity ksEntityPlane = null;
             GetTheComponentInterfaceMethod(KompasConnector.KsDocumentObj);
-            ksEntity ksEntityDrawOne = (ksEntity)_ksPart.NewEntity(5);
-            ksEntity ksEntityDrawTwo = (ksEntity)_ksPart.NewEntity(5);
-            ksEntity ksEntityDrawThree = (ksEntity)_ksPart.NewEntity(5);
-            ksEntity ksEntityDrawFour = (ksEntity)_ksPart.NewEntity(5);
+            ksEntity ksEntityDrawOne = (ksEntity)_ksPart.NewEntity(Sketch);
+            ksEntity ksEntityDrawTwo = (ksEntity)_ksPart.NewEntity(Sketch);
+            ksEntity ksEntityDrawThree = (ksEntity)_ksPart.NewEntity(Sketch);
+            ksEntity ksEntityDrawFour = (ksEntity)_ksPart.NewEntity(Sketch);
             ksEntity ksEntityPlaneOffset = (ksEntity)_ksPart.NewEntity
                 ((short)Obj3dType.o3d_planeOffset);
             ksEntity ksEntityExtrusion = (ksEntity)_ksPart.NewEntity
@@ -249,19 +256,18 @@ namespace KompasAPIModel
             // построение отверстий сабвуфера 
             ksEntity ksEntityPlaneSub = (ksEntity)_ksPart.NewEntity
                 ((short)Obj3dType.o3d_planeYOZ);
-            CreatSketchMethod(_ksPart, ksEntityDrawThree, KompasConnector.KompasObj, ksEntityPlaneSub, true, false, 1);
+            CreatSketchMethod(_ksPart, ksEntityDrawThree, KompasConnector.KompasObj, ksEntityPlaneSub, true, false, SubCircle);
             ksEntity ksSubCutEntityExtrusion = (ksEntity)_ksPart.NewEntity
                 ((int)Obj3dType.o3d_cutExtrusion);
-            CutExstrusionMethod(ksEntityDrawThree, ksSubCutEntityExtrusion, 1);
+            CutExstrusionMethod(ksEntityDrawThree, ksSubCutEntityExtrusion, SubCircle);
 
             // построение отверстий порта
-
             ksEntity ksEntityPlanePort = (ksEntity)_ksPart.NewEntity
                ((short)Obj3dType.o3d_planeXOZ);
-            CreatSketchMethod(_ksPart, ksEntityDrawFour, KompasConnector.KompasObj, ksEntityPlanePort, true, false, 2);
+            CreatSketchMethod(_ksPart, ksEntityDrawFour, KompasConnector.KompasObj, ksEntityPlanePort, true, false, PortCircle);
             ksEntity ksPortCutEntityExtrusion = (ksEntity)_ksPart.NewEntity
                 ((int)Obj3dType.o3d_cutExtrusion);
-            CutExstrusionMethod(ksEntityDrawFour, ksPortCutEntityExtrusion, 2);
+            CutExstrusionMethod(ksEntityDrawFour, ksPortCutEntityExtrusion, PortCircle);
         }
     }
 

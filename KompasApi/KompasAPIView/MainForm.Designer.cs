@@ -180,6 +180,11 @@
             // WidthTextBox
             // 
             this.WidthTextBox.Location = new System.Drawing.Point(9, 179);
+            this.WidthTextBox.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
             this.WidthTextBox.Name = "WidthTextBox";
             this.WidthTextBox.Size = new System.Drawing.Size(252, 22);
             this.WidthTextBox.TabIndex = 5;
@@ -193,6 +198,11 @@
             // LengthTextBox
             // 
             this.LengthTextBox.Location = new System.Drawing.Point(9, 134);
+            this.LengthTextBox.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
             this.LengthTextBox.Name = "LengthTextBox";
             this.LengthTextBox.Size = new System.Drawing.Size(252, 22);
             this.LengthTextBox.TabIndex = 4;
@@ -276,6 +286,8 @@
             this.Controls.Add(this.label9);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.ButtonBuild);
+            this.MaximumSize = new System.Drawing.Size(307, 474);
+            this.MinimumSize = new System.Drawing.Size(307, 474);
             this.Name = "MainForm";
             this.Text = "Построение корпуса сабвуфера";
             this.TopMost = true;

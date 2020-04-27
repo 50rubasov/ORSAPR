@@ -21,6 +21,7 @@ namespace KompasAPIView
         public MainForm()
         {
             InitializeComponent();
+            ButtonBuild.Visible = false;
             _bodyparamsClass.SubDiameter = 15;
             _bodyparamsClass.PortDiameter = 7;
             _bodyparamsClass.NumberOfHoles = 1;
@@ -30,13 +31,24 @@ namespace KompasAPIView
             _bodyparamsClass.Thickness = 2;
         }
 
+       
+
         private void ButtonBuild_Click(object sender, EventArgs e)
         {
-
-            _builder.ProgramKompasClassParamMethod
+            try
+            {
+                _builder.ProgramKompasClassParamMethod
                     (_bodyparamsClass);
 
-            _builder.Build(_kompasConnector);
+                _builder.Build(_kompasConnector);
+            }
+            catch (NullReferenceException)
+            {
+                KompasCheckBox.Checked = false;
+
+                MessageBox.Show("Необходимо открыть компас");
+
+            }
 
         }
 
@@ -46,10 +58,12 @@ namespace KompasAPIView
             if (KompasCheckBox.Checked)
             {
                 _kompasConnector.OpenKompas3D();
+                ButtonBuild.Visible = true;
             }
             else 
             { 
                 _kompasConnector.CloseKompas3D();
+                ButtonBuild.Visible = false;
             }
 
         }
@@ -60,11 +74,10 @@ namespace KompasAPIView
             {
                 _bodyparamsClass.NumberOfHoles = Convert.ToInt32(NumberOfHolesTextBox.Value);
             }
-            catch (ArgumentOutOfRangeException)
+            catch (ArgumentException Exception)
             {
-                SelectedCloseTexBox
-                      (SubDiameterTextBox,
-                     "Вводимое число должно быть в диапазоне от 1 до 2");
+                SelectedCloseTextBox
+                    (NumberOfHolesTextBox, Exception.Message);
             }
         }
 
@@ -75,11 +88,11 @@ namespace KompasAPIView
             {
                 _bodyparamsClass.Lenght = Convert.ToInt32(LengthTextBox.Value);
             }
-            catch (ArgumentOutOfRangeException)
+            catch (ArgumentException Exception)
             {
-                SelectedCloseTexBox
+                SelectedCloseTextBox
                       (LengthTextBox,
-                     "Вводимое число должно быть больше диаметра сабвуфера*число отверстий+толщина и меньше 90");
+                     Exception.Message);
             }
         }
 
@@ -89,11 +102,11 @@ namespace KompasAPIView
             {
                 _bodyparamsClass.Width = Convert.ToInt32(WidthTextBox.Value);
             }
-            catch (ArgumentOutOfRangeException)
+            catch (ArgumentException Exception)
             {
-                SelectedCloseTexBox
-                      (WidthTextBox,
-                     "Вводимое число должно быть больше диаметра сабвуфера+толщины и меньше длинны короба");
+                SelectedCloseTextBox
+                      (WidthTextBox,Exception.Message
+                     );
             }
         }
 
@@ -103,11 +116,11 @@ namespace KompasAPIView
             {
                 _bodyparamsClass.Height = Convert.ToInt32(HeightTextBox.Value);
             }
-            catch (ArgumentOutOfRangeException)
+            catch (ArgumentException Exception)
             {
-                SelectedCloseTexBox
-                      (HeightTextBox,
-                     "Вводимое число должно быть больше диаметра сабвуфера+толщины и меньше 55ти");
+                SelectedCloseTextBox
+                      (HeightTextBox, Exception.Message
+                     );
             }
         }
 
@@ -117,11 +130,11 @@ namespace KompasAPIView
             {
                 _bodyparamsClass.PortDiameter = Convert.ToInt32(PortDiameterTextBox.Value);
             }
-            catch (ArgumentOutOfRangeException)
+            catch (ArgumentException Exception)
             {
-                SelectedCloseTexBox
-                      (PortDiameterTextBox,
-                     "Вводимое число должно быть больше 1го и меньше половины диаметра сабвуфера");
+                SelectedCloseTextBox
+                      (PortDiameterTextBox, Exception.Message
+                     );
             }
         }
 
@@ -131,11 +144,11 @@ namespace KompasAPIView
             {
                 _bodyparamsClass.SubDiameter = Convert.ToInt32(SubDiameterTextBox.Value);
             }
-            catch (ArgumentOutOfRangeException)
+            catch (ArgumentException Exception)
             {
-                SelectedCloseTexBox
-                      (SubDiameterTextBox,
-                     "Вводимое число должно быть больше 14ти и меньше 45х");
+                SelectedCloseTextBox
+                      (SubDiameterTextBox, Exception.Message
+                    );
             }
         }
 
@@ -145,11 +158,11 @@ namespace KompasAPIView
             {
                 _bodyparamsClass.Thickness = Convert.ToInt32(ThicknessTextBox.Value);
             }
-            catch (ArgumentOutOfRangeException)
+            catch (ArgumentException Exception)
             {
-                SelectedCloseTexBox
-                      (ThicknessTextBox,
-                     "Вводимое число должно быть больше 0 и меньше 5ти");
+                SelectedCloseTextBox
+                      (ThicknessTextBox, Exception.Message
+                );
             }
         }
 
@@ -159,11 +172,12 @@ namespace KompasAPIView
         /// </summary>
         /// <param name="textBox">Текстбокс</param>
         /// <param name="message">Сообщение</param>
-        private void SelectedCloseTexBox(NumericUpDown textBox, string message)
+        private void SelectedCloseTextBox(NumericUpDown textBox, string message)
         {
-            MessageBox.Show(message, "Error",
-                  MessageBoxButtons.OK, MessageBoxIcon.Error);
             textBox.Select();
+            MessageBox.Show(message, "Ошибка",
+                  MessageBoxButtons.OK, MessageBoxIcon.Error);
+            
         }
     }
 }

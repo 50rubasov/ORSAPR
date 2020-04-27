@@ -48,9 +48,9 @@ namespace KompasAPIModel
             }
             set
             {
-                if (value < SubDiameter+Thickness|| value > 55)
+                if (value < SubDiameter+2*Thickness|| value > 55)
                 {
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentException("Вводимое число должно быть больше диаметра сабвуфера+толщина*2 и меньше 55ти");
                 }
                 _height = value;
             }
@@ -65,7 +65,7 @@ namespace KompasAPIModel
             {
                 if (value < 15 || value > 45)
                 {
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentException("Вводимое число должно быть больше 14ти и меньше 45х");
                 }
                 _subDiameter = value;
             }
@@ -80,7 +80,7 @@ namespace KompasAPIModel
             {
                 if (value < 1 || value > 2)
                 {
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentException("Вводимое число должно быть в диапазоне от 1 до 2");
                 }
                 _numberOfHoles = value;
             }
@@ -94,9 +94,10 @@ namespace KompasAPIModel
             }
             set
             {
-                if (value < NumberOfHoles*SubDiameter+Thickness || value > 90)
+                if (value < NumberOfHoles*SubDiameter+ 2 * Thickness || value > 106)
                 {
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentException("Вводимое число должно быть в диапазоне ОТ кол. отверстий * диаметр саб. + 2 толщины ДО 106");
+                    
                 }
                 _length = value;
             }
@@ -110,9 +111,9 @@ namespace KompasAPIModel
             }
             set
             {
-                if (value < SubDiameter+Thickness || value > Lenght)
+                if (value < SubDiameter + 2 * Thickness || value > Lenght  )
                 {
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentException("Вводимое число должно быть больше диаметра сабвуфера+толщина*2 и меньше длинны короба");
                 }
                 _width = value;
             }
@@ -128,7 +129,7 @@ namespace KompasAPIModel
             {
                 if (value < 2 || value > 4)
                 {
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentException("Вводимое число должно быть больше 0 и меньше 5ти");
                 }
                 _thickness = value;
             }
@@ -143,7 +144,7 @@ namespace KompasAPIModel
             {
                 if (value < 4 || value > SubDiameter/2)
                 {
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentException("Вводимое число должно быть больше 1го и меньше половины диаметра сабвуфера");
                 }
                 _portDiameter = value;
             }
