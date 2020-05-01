@@ -98,17 +98,17 @@ namespace KompasAPIModel
                 {
                     if (bodyparams.NumberOfHoles == 1)
                     {
-                        _ksDocument2D.ksCircle(-(bodyparams.Height / 2), -(bodyparams.Lenght/2), bodyparams.SubDiameter / 2, TypeOfCircle);
+                        _ksDocument2D.ksCircle(-(bodyparams.Height / 2), -(bodyparams.Lenght/2), bodyparams.SubDiameter / 2, 1);
                     }
                     else
                     {
-                        _ksDocument2D.ksCircle(-(bodyparams.Height / 2), -(bodyparams.Lenght / 4), bodyparams.SubDiameter / 2, TypeOfCircle);
-                        _ksDocument2D.ksCircle(-(bodyparams.Height / 2), -(3* bodyparams.Lenght / 4), bodyparams.SubDiameter / 2, TypeOfCircle);
+                        _ksDocument2D.ksCircle(-(bodyparams.Height / 2), -(bodyparams.Lenght / 4), bodyparams.SubDiameter / 2, 1);
+                        _ksDocument2D.ksCircle(-(bodyparams.Height / 2), -(3* bodyparams.Lenght / 4), bodyparams.SubDiameter / 2, 1);
                     }
                 }
                 else if (TypeOfCircle == 2)
                 {
-                    _ksDocument2D.ksCircle(bodyparams.Width/2, -(bodyparams.Height / 2), bodyparams.PortDiameter/2, TypeOfCircle);
+                    _ksDocument2D.ksCircle(bodyparams.Width/2, -(bodyparams.Height / 2), bodyparams.PortDiameter/2, 1);
                 }
             }
             _ksSketchDefinition.EndEdit();

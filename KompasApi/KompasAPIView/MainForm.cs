@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Forms;
 using KompasAPIModel;
 namespace KompasAPIView
@@ -25,7 +26,7 @@ namespace KompasAPIView
             _bodyparamsClass.SubDiameter = 15;
             _bodyparamsClass.PortDiameter = 7;
             _bodyparamsClass.NumberOfHoles = 1;
-            _bodyparamsClass.Height = 21;
+            _bodyparamsClass.Height = 20;
             _bodyparamsClass.Lenght = 45;
             _bodyparamsClass.Width = 33;
             _bodyparamsClass.Thickness = 2;
@@ -39,7 +40,6 @@ namespace KompasAPIView
             {
                 _builder.ProgramKompasClassParamMethod
                     (_bodyparamsClass);
-
                 _builder.Build(_kompasConnector);
             }
             catch (NullReferenceException)
@@ -143,12 +143,72 @@ namespace KompasAPIView
             try
             {
                 _bodyparamsClass.SubDiameter = Convert.ToInt32(SubDiameterTextBox.Value);
+                 UploadDimensions(_bodyparamsClass.SubDiameter);
             }
             catch (ArgumentException Exception)
             {
                 SelectedCloseTextBox
                       (SubDiameterTextBox, Exception.Message
                     );
+            }
+        }
+        
+        private void SetDimensions(int Lenght, int Width, int Hight, int PortDiameter)
+        {
+            _bodyparamsClass.Lenght = Lenght;
+            _bodyparamsClass.Width = Width;
+            _bodyparamsClass.Height = Hight;
+            _bodyparamsClass.PortDiameter = PortDiameter;
+            LengthTextBox.Value = _bodyparamsClass.Lenght;
+            WidthTextBox.Value = _bodyparamsClass.Width;
+            HeightTextBox.Value = _bodyparamsClass.Height;
+            PortDiameterTextBox.Value = _bodyparamsClass.PortDiameter;
+        }
+        /// <summary>
+        /// Автоматическая установка значений при стандартных значениях диаметра.
+        /// </summary>
+        /// <param name="SubDiameter"></param>
+        private void UploadDimensions(int SubDiameter)
+        {
+            SubDiameter = _bodyparamsClass.SubDiameter;
+            switch (SubDiameter)
+            {
+                case 15:
+                    SetDimensions(45,33,20,7);
+                    break;
+                    case 20:
+                        if (_bodyparamsClass.NumberOfHoles == 1)
+                        {
+                            SetDimensions(50, 36, 27,10);
+                        }
+                        else SetDimensions(85, 37, 27,10);
+                    break;
+                case 25:
+                    if (_bodyparamsClass.NumberOfHoles == 1)
+                    {
+                        SetDimensions(65, 37, 30,12);
+                    }
+                    else SetDimensions(85, 43, 35,12);
+                    break;
+                case 30:
+                    if (_bodyparamsClass.NumberOfHoles == 1)
+                    {
+                        SetDimensions(80, 38, 36,15);
+                    }
+                    else SetDimensions(90, 42, 55,15);
+                    break;
+                case 40:
+                    if (_bodyparamsClass.NumberOfHoles == 1)
+                    {
+                        SetDimensions(91, 55, 53, 22);
+                    }
+                    break;
+                case 45:
+                    if (_bodyparamsClass.NumberOfHoles == 1)
+                    {
+                        SetDimensions(91, 55, 53, 22);
+                    }
+                    break;
             }
         }
 

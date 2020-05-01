@@ -153,7 +153,7 @@
             this.HeightTextBox.Size = new System.Drawing.Size(252, 22);
             this.HeightTextBox.TabIndex = 6;
             this.HeightTextBox.Value = new decimal(new int[] {
-            21,
+            20,
             0,
             0,
             0});

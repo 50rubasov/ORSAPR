@@ -14,7 +14,7 @@ namespace ParamsUnitTests
             (int SubDiameter)
         {
             var bodyParams = new BodyParams();
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            Assert.Throws<ArgumentException>(() =>
                 bodyParams.SubDiameter = SubDiameter);
         }
         [TestCase(15, TestName = "Позитивный тест установки диаметра отверстия сабвуфера со значением 15")]
@@ -31,7 +31,7 @@ namespace ParamsUnitTests
             (int NumberOfHoles)
         {
             var bodyParams = new BodyParams();
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            Assert.Throws<ArgumentException>(() =>
                 bodyParams.NumberOfHoles = NumberOfHoles);
         }
         [TestCase(1, TestName = "Позитивный тест установки количества отверстий сабвуфера со значением 1")]
@@ -43,14 +43,14 @@ namespace ParamsUnitTests
         }
 
         [TestCase(4, 15, 1, TestName = "Негативный тест установки длинны сабвуфера со значением 4")]
-        [TestCase(91, 15, 1, TestName = "Негативный тест установки длинны сабвуфера со значением 91")]
+        [TestCase(110, 15, 1, TestName = "Негативный тест установки длинны сабвуфера со значением 110")]
         public void SetLenght_NegativeTest
             (int Lenght, int SubDiameter, int NumberOfHoles)
         {
             var bodyParams = new BodyParams();
             bodyParams.NumberOfHoles = NumberOfHoles;
             bodyParams.SubDiameter = SubDiameter;
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            Assert.Throws<ArgumentException>(() =>
                 bodyParams.Lenght = Lenght);
         }
         [TestCase(16, 15, 1, TestName = "Позитивный тест установки длинны сабвуфера со значением 16")]
@@ -69,7 +69,7 @@ namespace ParamsUnitTests
         {
             var bodyParams = new BodyParams();
             bodyParams.SubDiameter = SubDiameter;
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            Assert.Throws<ArgumentException>(() =>
                 bodyParams.Height = Height);
         }
         [TestCase(16, 15, TestName = "Позитивный тест установки высоты сабвуфера со значением 16")]
@@ -88,7 +88,7 @@ namespace ParamsUnitTests
             var bodyParams = new BodyParams();
             bodyParams.SubDiameter = SubDiameter;
             bodyParams.Lenght = Lenght;
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            Assert.Throws<ArgumentException>(() =>
                 bodyParams.Width = Width);
         }
         [TestCase(16, 15,45, TestName = "Позитивный тест установки ширины сабвуфера со значением 16")]
@@ -107,7 +107,7 @@ namespace ParamsUnitTests
             (int Thickness)
         {
             var bodyParams = new BodyParams();
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            Assert.Throws<ArgumentException>(() =>
                 bodyParams.Thickness = Thickness);
         }
         [TestCase(2, TestName = "Позитивный тест установки толщины сабвуфера со значением 2")]
@@ -125,7 +125,7 @@ namespace ParamsUnitTests
         {
             var bodyParams = new BodyParams();
             bodyParams.SubDiameter = SubDiameter;
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
+            Assert.Throws<ArgumentException>(() =>
                 bodyParams.PortDiameter = PortDiameter);
         }
         [TestCase(5,15, TestName = "Позитивный тест установки диаметра порта со значением 5")]
