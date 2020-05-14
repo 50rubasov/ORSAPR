@@ -1,7 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows.Forms;
 using KompasAPIModel;
+using System.Collections.Generic;
+
+
 namespace KompasAPIView
 {
     public partial class MainForm : Form
@@ -18,21 +20,34 @@ namespace KompasAPIView
         /// </summary>
         private BodyParams _bodyparamsClass =
             new BodyParams();
+        
+        /// <summary>
+        /// Словарь хранящий текстбоксы и названия параметров
+        /// </summary>
+        private Dictionary<NumericUpDown,string> _elements = new Dictionary<NumericUpDown, string>();
 
         public MainForm()
         {
+          
+
             InitializeComponent();
             ButtonBuild.Visible = false;
-            _bodyparamsClass.SubDiameter = 15;
-            _bodyparamsClass.PortDiameter = 7;
+
+            _elements.Add(NumberOfHolesTextBox, "NumberOfHoles");
+            _elements.Add(SubDiameterTextBox, "SubDiameter");
+            _elements.Add(LengthTextBox, "Length");
+            _elements.Add(WidthTextBox, "Width");
+            _elements.Add(HeightTextBox, "Height");
+            _elements.Add(PortDiameterTextBox, "PortDiameter");
+            _elements.Add(ThicknessTextBox, "Thickness");
+
             _bodyparamsClass.NumberOfHoles = 1;
-            _bodyparamsClass.Height = 20;
-            _bodyparamsClass.Lenght = 45;
-            _bodyparamsClass.Width = 33;
+            _bodyparamsClass.SubDiameter = 15;
+            UploadDimensions(_bodyparamsClass.SubDiameter);
             _bodyparamsClass.Thickness = 2;
+
         }
 
-       
 
         private void ButtonBuild_Click(object sender, EventArgs e)
         {
@@ -68,112 +83,66 @@ namespace KompasAPIView
 
         }
 
-        private void NumberOfHolesTextBox_Leave(object sender, EventArgs e)
+        /// <summary>
+        /// Обработчик события при изменении значения текстбокса
+        /// </summary>
+        /// <param name="sender">Объект</param>
+        /// <param name="e">Действие</param>
+        private void TextBox_Leave(object sender, EventArgs e)
         {
+            var textBox = sender as NumericUpDown;
+            
             try
             {
-                _bodyparamsClass.NumberOfHoles = Convert.ToInt32(NumberOfHolesTextBox.Value);
+
+                switch (_elements[textBox])
+                {
+                    case "NumberOfHoles":
+                        _bodyparamsClass.NumberOfHoles = Convert.ToInt32(textBox.Value);
+                        break;
+                    case "SubDiameter":
+                        {
+                            _bodyparamsClass.SubDiameter = Convert.ToInt32(textBox.Value);
+                            UploadDimensions(Convert.ToInt32(textBox.Value));
+                        }
+                        break;
+                    case "Length":
+                        _bodyparamsClass.Lenght = Convert.ToInt32(textBox.Value);
+                        break;
+                    case "Width":
+                        _bodyparamsClass.Width = Convert.ToInt32(textBox.Value);
+                        break;
+                    case "Height":
+                        _bodyparamsClass.Height = Convert.ToInt32(textBox.Value);
+                        break;
+                    case "PortDiameter":
+                        _bodyparamsClass.PortDiameter = Convert.ToInt32(textBox.Value);
+                        break;
+                    case "Thickness":
+                        _bodyparamsClass.Thickness = Convert.ToInt32(textBox.Value);
+                        break;
+                }
+                    
             }
             catch (ArgumentException Exception)
             {
                 SelectedCloseTextBox
-                    (NumberOfHolesTextBox, Exception.Message);
+                    (textBox, Exception.Message);
             }
         }
 
-
-        private void LengthTextBox_Leave(object sender, EventArgs e)
-        {
-            try
-            {
-                _bodyparamsClass.Lenght = Convert.ToInt32(LengthTextBox.Value);
-            }
-            catch (ArgumentException Exception)
-            {
-                SelectedCloseTextBox
-                      (LengthTextBox,
-                     Exception.Message);
-            }
-        }
-
-        private void WidthTextBox_Leave(object sender, EventArgs e)
-        {
-            try
-            {
-                _bodyparamsClass.Width = Convert.ToInt32(WidthTextBox.Value);
-            }
-            catch (ArgumentException Exception)
-            {
-                SelectedCloseTextBox
-                      (WidthTextBox,Exception.Message
-                     );
-            }
-        }
-
-        private void HeightTextBox_Leave(object sender, EventArgs e)
-        {
-            try
-            {
-                _bodyparamsClass.Height = Convert.ToInt32(HeightTextBox.Value);
-            }
-            catch (ArgumentException Exception)
-            {
-                SelectedCloseTextBox
-                      (HeightTextBox, Exception.Message
-                     );
-            }
-        }
-
-        private void PortDiameterTextBox_Leave(object sender, EventArgs e)
-        {
-            try
-            {
-                _bodyparamsClass.PortDiameter = Convert.ToInt32(PortDiameterTextBox.Value);
-            }
-            catch (ArgumentException Exception)
-            {
-                SelectedCloseTextBox
-                      (PortDiameterTextBox, Exception.Message
-                     );
-            }
-        }
-
-        private void SubDiameterTextBox_Leave(object sender, EventArgs e)
-        {
-            try
-            {
-                _bodyparamsClass.SubDiameter = Convert.ToInt32(SubDiameterTextBox.Value);
-                 UploadDimensions(_bodyparamsClass.SubDiameter);
-            }
-            catch (ArgumentException Exception)
-            {
-                SelectedCloseTextBox
-                      (SubDiameterTextBox, Exception.Message
-                    );
-            }
-        }
         
-        private void SetDimensions(int Lenght, int Width, int Hight, int PortDiameter)
-        {
-            _bodyparamsClass.Lenght = Lenght;
-            _bodyparamsClass.Width = Width;
-            _bodyparamsClass.Height = Hight;
-            _bodyparamsClass.PortDiameter = PortDiameter;
-            LengthTextBox.Value = _bodyparamsClass.Lenght;
-            WidthTextBox.Value = _bodyparamsClass.Width;
-            HeightTextBox.Value = _bodyparamsClass.Height;
-            PortDiameterTextBox.Value = _bodyparamsClass.PortDiameter;
-        }
+       
         /// <summary>
         /// Автоматическая установка значений при стандартных значениях диаметра.
         /// </summary>
-        /// <param name="SubDiameter"></param>
+        /// <param name="SubDiameter">Диаметр Сабвуфера.</param>
         private void UploadDimensions(int SubDiameter)
         {
             SubDiameter = _bodyparamsClass.SubDiameter;
             switch (SubDiameter)
             {
-                case 15:
+                    case 15:
                     SetDimensions(45,33,20,7);
                     break;
                     case 20:
@@ -200,7 +169,7 @@ namespace KompasAPIView
                 case 40:
                     if (_bodyparamsClass.NumberOfHoles == 1)
                     {
-                        SetDimensions(91, 55, 53, 22);
+                        SetDimensions(85, 44, 46, 20);
                     }
                     break;
                 case 45:
@@ -212,18 +181,16 @@ namespace KompasAPIView
             }
         }
 
-        private void ThicknessTextBox_Leave(object sender, EventArgs e)
+        private void SetDimensions(int Lenght, int Width, int Height, int PortDiameter)
         {
-            try
-            {
-                _bodyparamsClass.Thickness = Convert.ToInt32(ThicknessTextBox.Value);
-            }
-            catch (ArgumentException Exception)
-            {
-                SelectedCloseTextBox
-                      (ThicknessTextBox, Exception.Message
-                );
-            }
+            _bodyparamsClass.Lenght = Lenght;
+            _bodyparamsClass.Width = Width;
+            _bodyparamsClass.Height = Height;
+            _bodyparamsClass.PortDiameter = PortDiameter;
+            LengthTextBox.Value = _bodyparamsClass.Lenght;
+            WidthTextBox.Value = _bodyparamsClass.Width;
+            HeightTextBox.Value = _bodyparamsClass.Height;
+            PortDiameterTextBox.Value = _bodyparamsClass.PortDiameter;
         }
 
         /// <summary>

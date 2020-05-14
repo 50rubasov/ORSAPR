@@ -100,7 +100,7 @@
             0,
             0,
             0});
-            this.SubDiameterTextBox.Leave += new System.EventHandler(this.SubDiameterTextBox_Leave);
+            this.SubDiameterTextBox.Leave += new System.EventHandler(this.TextBox_Leave);
             // 
             // NumberOfHolesTextBox
             // 
@@ -113,7 +113,7 @@
             0,
             0,
             0});
-            this.NumberOfHolesTextBox.Leave += new System.EventHandler(this.NumberOfHolesTextBox_Leave);
+            this.NumberOfHolesTextBox.Leave += new System.EventHandler(this.TextBox_Leave);
             // 
             // ThicknessTextBox
             // 
@@ -131,7 +131,7 @@
             0,
             0,
             0});
-            this.ThicknessTextBox.Leave += new System.EventHandler(this.ThicknessTextBox_Leave);
+            this.ThicknessTextBox.Leave += new System.EventHandler(this.TextBox_Leave);
             // 
             // PortDiameterTextBox
             // 
@@ -144,7 +144,7 @@
             0,
             0,
             0});
-            this.PortDiameterTextBox.Leave += new System.EventHandler(this.PortDiameterTextBox_Leave);
+            this.PortDiameterTextBox.Leave += new System.EventHandler(this.TextBox_Leave);
             // 
             // HeightTextBox
             // 
@@ -157,7 +157,7 @@
             0,
             0,
             0});
-            this.HeightTextBox.Leave += new System.EventHandler(this.HeightTextBox_Leave);
+            this.HeightTextBox.Leave += new System.EventHandler(this.TextBox_Leave);
             // 
             // label6
             // 
@@ -193,7 +193,7 @@
             0,
             0,
             0});
-            this.WidthTextBox.Leave += new System.EventHandler(this.WidthTextBox_Leave);
+            this.WidthTextBox.Leave += new System.EventHandler(this.TextBox_Leave);
             // 
             // LengthTextBox
             // 
@@ -211,7 +211,7 @@
             0,
             0,
             0});
-            this.LengthTextBox.Leave += new System.EventHandler(this.LengthTextBox_Leave);
+            this.LengthTextBox.Leave += new System.EventHandler(this.TextBox_Leave);
             // 
             // label8
             // 
