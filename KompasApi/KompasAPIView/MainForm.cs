@@ -8,6 +8,9 @@ namespace KompasAPIView
 {
     public partial class MainForm : Form
     {
+        /// <summary>
+        /// Создание объекта класса для подключения к КОМПАС 3D
+        /// </summary>
         private KompasConnector _kompasConnector = new KompasConnector();
 
         /// <summary>
@@ -24,8 +27,11 @@ namespace KompasAPIView
         /// <summary>
         /// Словарь хранящий текстбоксы и перечисление параметров.
         /// </summary>
-
         private Dictionary<NumericUpDown, Elements> _elements;
+        
+        /// <summary>
+        /// Конструктор класса Mainform
+        /// </summary>
         public MainForm()
         {
 
