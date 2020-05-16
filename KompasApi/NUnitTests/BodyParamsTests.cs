@@ -4,6 +4,9 @@ using KompasAPIModel;
 
 namespace ParamsUnitTests
 {
+    /// <summary>
+    /// Класс, отвечающий за тестирование входных параметров сабвуфера.
+    /// </summary>
     [TestFixture]
     public class BodyParamsTests
     {

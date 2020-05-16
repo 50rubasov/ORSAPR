@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="BodyParams.cs" />
     <Compile Include="Builder.cs" />
+    <Compile Include="Elements.cs" />
     <Compile Include="KompasConnector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

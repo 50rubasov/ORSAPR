@@ -20,27 +20,29 @@ namespace KompasAPIView
         /// </summary>
         private BodyParams _bodyparamsClass =
             new BodyParams();
-        
-        /// <summary>
-        /// Словарь хранящий текстбоксы и названия параметров
-        /// </summary>
-        private Dictionary<NumericUpDown,string> _elements = new Dictionary<NumericUpDown, string>();
 
+        /// <summary>
+        /// Словарь хранящий текстбоксы и перечисление параметров.
+        /// </summary>
+
+        private Dictionary<NumericUpDown, Elements> _elements;
         public MainForm()
         {
-          
 
             InitializeComponent();
+
+            _elements = new Dictionary<NumericUpDown, Elements>
+            {
+                {NumberOfHolesTextBox, Elements.NumberOfHoles },
+                {SubDiameterTextBox, Elements.SubDiameter },
+                {LengthTextBox, Elements.Length },
+                {WidthTextBox, Elements.Width },
+                {HeightTextBox, Elements.Heigth },
+                {PortDiameterTextBox, Elements.PortDiameter },
+                {ThicknessTextBox, Elements.Thickness },
+            };
+
             ButtonBuild.Visible = false;
-
-            _elements.Add(NumberOfHolesTextBox, "NumberOfHoles");
-            _elements.Add(SubDiameterTextBox, "SubDiameter");
-            _elements.Add(LengthTextBox, "Length");
-            _elements.Add(WidthTextBox, "Width");
-            _elements.Add(HeightTextBox, "Height");
-            _elements.Add(PortDiameterTextBox, "PortDiameter");
-            _elements.Add(ThicknessTextBox, "Thickness");
-
             _bodyparamsClass.NumberOfHoles = 1;
             _bodyparamsClass.SubDiameter = 15;
             UploadDimensions(_bodyparamsClass.SubDiameter);
@@ -48,7 +50,11 @@ namespace KompasAPIView
 
         }
 
-
+        /// <summary>
+        /// Кнопка для построения детали.
+        /// </summary>
+        /// <param name="sender">Объект</param>
+        /// <param name="e">Действие</param>
         private void ButtonBuild_Click(object sender, EventArgs e)
         {
             try
@@ -67,6 +73,11 @@ namespace KompasAPIView
 
         }
 
+        /// <summary>
+        /// CheckBox для открытия/закрытия КОМПАС 3D
+        /// </summary>
+        /// <param name="sender">Объект</param>
+        /// <param name="e">Действие</param>
         private void KompasCheckBox_CheckedChanged(object sender, EventArgs e)
         {
 
@@ -97,32 +108,32 @@ namespace KompasAPIView
 
                 switch (_elements[textBox])
                 {
-                    case "NumberOfHoles":
+                    case Elements.NumberOfHoles:
                         _bodyparamsClass.NumberOfHoles = Convert.ToInt32(textBox.Value);
                         break;
-                    case "SubDiameter":
+                    case Elements.SubDiameter:
                         {
                             _bodyparamsClass.SubDiameter = Convert.ToInt32(textBox.Value);
                             UploadDimensions(Convert.ToInt32(textBox.Value));
                         }
                         break;
-                    case "Length":
+                    case Elements.Length:
                         _bodyparamsClass.Lenght = Convert.ToInt32(textBox.Value);
                         break;
-                    case "Width":
+                    case Elements.Width:
                         _bodyparamsClass.Width = Convert.ToInt32(textBox.Value);
                         break;
-                    case "Height":
+                    case Elements.Heigth:
                         _bodyparamsClass.Height = Convert.ToInt32(textBox.Value);
                         break;
-                    case "PortDiameter":
+                    case Elements.PortDiameter:
                         _bodyparamsClass.PortDiameter = Convert.ToInt32(textBox.Value);
                         break;
-                    case "Thickness":
+                    case Elements.Thickness:
                         _bodyparamsClass.Thickness = Convert.ToInt32(textBox.Value);
                         break;
                 }
-                    
+                   
             }
             catch (ArgumentException Exception)
             {
@@ -181,6 +192,13 @@ namespace KompasAPIView
             }
         }
 
+        /// <summary>
+        /// Установка значений габаритов модели и обновление полей формы.
+        /// </summary>
+        /// <param name="Lenght">Длинна</param>
+        /// <param name="Width">Ширина</param>
+        /// <param name="Height">Высота</param>
+        /// <param name="PortDiameter">Диаметр Порта</param>
         private void SetDimensions(int Lenght, int Width, int Height, int PortDiameter)
         {
             _bodyparamsClass.Lenght = Lenght;

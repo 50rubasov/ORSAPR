@@ -36,10 +36,8 @@ namespace KompasAPIModel
         private int _thickness;
 
         /// <summary>
-        /// Свойство для высоты.
+        /// Устанавливает и возвращает значение высоты
         /// </summary>
-
-
         public int Height
         {
             get
@@ -56,6 +54,10 @@ namespace KompasAPIModel
                 _height = value;
             }
         }
+
+        /// <summary>
+        /// Устанавливает и возвращает значение диаметра сабвуфера.
+        /// </summary>
         public int SubDiameter
         {
             get
@@ -71,6 +73,10 @@ namespace KompasAPIModel
                 _subDiameter = value;
             }
         }
+
+        /// <summary>
+        /// Устанавливает и возвращает количество отверстий сабвуфера.
+        /// </summary>
         public int NumberOfHoles
         {
             get
@@ -86,7 +92,9 @@ namespace KompasAPIModel
                 _numberOfHoles = value;
             }
         }
-
+        /// <summary>
+        /// Устанавливает и возвращает значение длинны.
+        /// </summary>
         public int Lenght
         {
             get
@@ -103,7 +111,9 @@ namespace KompasAPIModel
                 _length = value;
             }
         }
-
+        /// <summary>
+        /// Устанавливает и возвращает значение ширины короба
+        /// </summary>
         public int Width
         {
             get
@@ -119,7 +129,9 @@ namespace KompasAPIModel
                 _width = value;
             }
         }
-
+        /// <summary>
+        /// Устанавливает и возвращает значение толщины короба
+        /// </summary>
         public int Thickness
         {
             get
@@ -135,6 +147,10 @@ namespace KompasAPIModel
                 _thickness = value;
             }
         }
+
+        /// <summary>
+        /// Устанавливает и возвращает значение диаметра порта.
+        /// </summary>
         public int PortDiameter
         {
             get
